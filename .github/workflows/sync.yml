@@ -1,0 +1,23 @@
+name: Sync Google Sheets
+
+on:
+  schedule:
+    - cron: '30 1 * * *'   # Runs daily at 7 AM India time
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Create key.json
+        run: echo '${{ secrets.GOOGLE_KEY }}' > key.json
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Python script
+        run: python sync_sheets.py
